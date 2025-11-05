@@ -7,7 +7,7 @@ package-lock.json
 
 # Database files
 data/
-*.json
+data/*.json
 
 # Logs
 logs/

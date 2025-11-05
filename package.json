@@ -1,0 +1,29 @@
+{
+  "name": "morph-mind-bot",
+  "version": "1.0.0",
+  "description": "Morph Mind - AI-powered DeFi yield optimization bot for Solana",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node --watch bot.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.8",
+    "@solana/spl-token": "^0.4.9",
+    "node-telegram-bot-api": "^0.66.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "bs58": "^6.0.0"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "solana",
+    "defi",
+    "yield",
+    "ai",
+    "auto-compound"
+  ],
+  "author": "Morph Mind Labs",
+  "license": "MIT"
+}
