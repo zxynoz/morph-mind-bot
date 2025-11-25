@@ -1,7 +1,7 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const { Connection, PublicKey, Keypair, Transaction, SystemProgram, LAMPORTS_PER_SOL } = require('@solana/web3.js');
-const { getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, TOKEN_PROGRAM_ID } = require('@solana/spl-token');
+const { Connection, PublicKey, Keypair, Transaction, SystemProgram, LAMPORTS_PER_MONAD } = require('@monad/web3.js');
+const { getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, TOKEN_PROGRAM_ID } = require('@monad/spl-token');
 const bs58 = require('bs58');
 const fs = require('fs');
 const path = require('path');
@@ -15,8 +15,8 @@ const POOLS_DB = path.join(__dirname, 'data', 'pools.json');
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-// Solana connection
-const connection = new Connection(process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com', 'confirmed');
+// Monad connection
+const connection = new Connection(process.env.MONAD_RPC_URL || 'https://api.mainnet-beta.monad.com', 'confirmed');
 
 // Initialize data directories
 if (!fs.existsSync(path.join(__dirname, 'data'))) {
@@ -51,11 +51,11 @@ let pools = loadDB(POOLS_DB);
 // Initialize default pools
 if (Object.keys(pools).length === 0) {
     pools = {
-        'marinade': { name: 'Marinade Finance', apy: 6.8, tvl: 0, active: true },
-        'raydium': { name: 'Raydium', apy: 12.5, tvl: 0, active: true },
-        'orca': { name: 'Orca', apy: 10.2, tvl: 0, active: true },
-        'kamino': { name: 'Kamino', apy: 15.3, tvl: 0, active: true },
-        'drift': { name: 'Drift Protocol', apy: 8.9, tvl: 0, active: true }
+        'monadstake': { name: 'MonadStake Finance', apy: 6.8, tvl: 0, active: true },
+        'monadswap': { name: 'MonadSwap', apy: 12.5, tvl: 0, active: true },
+        'monadpool': { name: 'MonadPool', apy: 10.2, tvl: 0, active: true },
+        'monadyield': { name: 'MonadYield', apy: 15.3, tvl: 0, active: true },
+        'monadlend': { name: 'MonadLend Protocol', apy: 8.9, tvl: 0, active: true }
     };
     saveDB(POOLS_DB, pools);
 }
@@ -191,7 +191,7 @@ function mainKeyboard() {
     return {
         reply_markup: {
             keyboard: [
-                ['💰 Stake SOL', '📊 My Portfolio'],
+                ['💰 Stake MONAD', '📊 My Portfolio'],
                 ['🏦 Pools Info', '💸 Withdraw'],
                 ['📈 Statistics', '⚙️ Settings']
             ],
@@ -219,11 +219,11 @@ bot.onText(/\/start/, async (msg) => {
         user = createUser(chatId, username);
     }
     
-    const welcomeMsg = `🧠 *Welcome to Morph Mind!*
+    const welcomeMsg = `🧠 *Welcome to Monad Mind!*
 
 🚀 *Revolutionizing DeFi Yield Optimization*
 
-Morph Mind uses AI to automatically compound your rewards across the best Solana protocols without gas fee lockups.
+Monad Mind uses AI to automatically compound your rewards across the best Monad protocols without gas fee lockups.
 
 ✨ *Key Features:*
 • 🤖 AI-powered auto-compounding
@@ -236,16 +236,18 @@ Morph Mind uses AI to automatically compound your rewards across the best Solana
 \`${user.publicKey}\`
 
 📝 *Getting Started:*
-1. Deposit SOL to your wallet
-2. Stake your SOL
+1. Deposit MONAD to your wallet
+2. Stake your MONAD
 3. AI handles the rest!
+
+🌐 *Website:* monadmind.space
 
 Use the menu below to get started! 👇`;
     
     bot.sendMessage(chatId, welcomeMsg, { parse_mode: 'Markdown', ...mainKeyboard() });
 });
 
-bot.onText(/💰 Stake SOL|\/stake/, async (msg) => {
+bot.onText(/💰 Stake MONAD|\/stake/, async (msg) => {
     const chatId = msg.chat.id;
     const user = getUser(chatId);
     
@@ -254,7 +256,7 @@ bot.onText(/💰 Stake SOL|\/stake/, async (msg) => {
         return;
     }
     
-    const stakeMsg = `💰 *Stake SOL with Morph Mind*
+    const stakeMsg = `💰 *Stake MONAD with Monad Mind*
 
 Current available pools and APYs:
 
@@ -266,10 +268,10 @@ ${Object.entries(pools).filter(([_, p]) => p.active).map(([id, p]) =>
 • Compound your rewards
 • Reallocate to maximize yields
 
-💵 *Your Balance:* ${user.balance.toFixed(4)} SOL
+💵 *Your Balance:* ${user.balance.toFixed(4)} MONAD
 
-📝 Send the amount of SOL you want to stake:
-(Min: ${process.env.MIN_STAKE_AMOUNT || 0.1} SOL)`;
+📝 Send the amount of MONAD you want to stake:
+(Min: ${process.env.MIN_STAKE_AMOUNT || 0.1} MONAD)`;
     
     bot.sendMessage(chatId, stakeMsg, { parse_mode: 'Markdown', ...backKeyboard() });
     
@@ -284,13 +286,13 @@ ${Object.entries(pools).filter(([_, p]) => p.active).map(([id, p]) =>
         const maxStake = parseFloat(process.env.MAX_STAKE_AMOUNT || 1000);
         
         if (isNaN(amount) || amount < minStake || amount > maxStake) {
-            bot.sendMessage(chatId, `❌ Invalid amount. Please enter between ${minStake} and ${maxStake} SOL.`, backKeyboard());
+            bot.sendMessage(chatId, `❌ Invalid amount. Please enter between ${minStake} and ${maxStake} MONAD.`, backKeyboard());
             return;
         }
         
         // Simulate balance check (in production, check actual wallet balance)
         if (amount > user.balance) {
-            bot.sendMessage(chatId, `❌ Insufficient balance. Please deposit SOL to your wallet first.\n\n💼 Your wallet:\n\`${user.publicKey}\``, { parse_mode: 'Markdown', ...backKeyboard() });
+            bot.sendMessage(chatId, `❌ Insufficient balance. Please deposit MONAD to your wallet first.\n\n💼 Your wallet:\n\`${user.publicKey}\``, { parse_mode: 'Markdown', ...backKeyboard() });
             return;
         }
         
@@ -303,10 +305,10 @@ ${Object.entries(pools).filter(([_, p]) => p.active).map(([id, p]) =>
         
         const confirmMsg = `✅ *Stake Successful!*
 
-💰 *Amount:* ${amount} SOL
+💰 *Amount:* ${amount} MONAD
 🏦 *Pool:* ${stake.poolName}
 📈 *APY:* ${stake.startApy}%
-🪙 *Shares:* ${stake.shares.toFixed(4)} MORPH
+🪙 *Shares:* ${stake.shares.toFixed(4)} MONAD
 
 🤖 *AI Status:* Active
 • Auto-compounding enabled
@@ -333,7 +335,7 @@ bot.onText(/📊 My Portfolio|\/portfolio/, async (msg) => {
     const userStakes = getUserStakes(chatId);
     
     if (userStakes.length === 0) {
-        bot.sendMessage(chatId, '📊 *Your Portfolio*\n\nNo active stakes yet. Start earning by staking SOL!', { parse_mode: 'Markdown', ...mainKeyboard() });
+        bot.sendMessage(chatId, '📊 *Your Portfolio*\n\nNo active stakes yet. Start earning by staking MONAD!', { parse_mode: 'Markdown', ...mainKeyboard() });
         return;
     }
     
@@ -341,25 +343,25 @@ bot.onText(/📊 My Portfolio|\/portfolio/, async (msg) => {
         const duration = Math.floor((Date.now() - stake.startTime) / (1000 * 60 * 60 * 24));
         return `
 *Stake #${idx + 1}*
-💰 Amount: ${stake.amount.toFixed(4)} SOL
+💰 Amount: ${stake.amount.toFixed(4)} MONAD
 🏦 Pool: ${stake.poolName}
 📈 APY: ${stake.currentApy}%
-💎 Earned: ${stake.earned.toFixed(6)} SOL
-🪙 Shares: ${stake.shares.toFixed(4)} MORPH
+💎 Earned: ${stake.earned.toFixed(6)} MONAD
+🪙 Shares: ${stake.shares.toFixed(4)} MONAD
 ⏱️ Duration: ${duration} days`;
     }).join('\n\n---\n');
     
     const portfolioMsg = `📊 *Your Portfolio*
 
-💼 *Balance:* ${user.balance.toFixed(4)} SOL
-💰 *Total Staked:* ${user.totalStaked.toFixed(4)} SOL
-💎 *Total Earned:* ${user.totalEarned.toFixed(6)} SOL
+💼 *Balance:* ${user.balance.toFixed(4)} MONAD
+💰 *Total Staked:* ${user.totalStaked.toFixed(4)} MONAD
+💎 *Total Earned:* ${user.totalEarned.toFixed(6)} MONAD
 📈 *ROI:* ${((user.totalEarned / user.totalStaked) * 100).toFixed(2)}%
 
 *Active Stakes:*
 ${stakesInfo}
 
-${compounded > 0 ? `\n🤖 Just auto-compounded ${compounded.toFixed(6)} SOL!` : ''}`;
+${compounded > 0 ? `\n🤖 Just auto-compounded ${compounded.toFixed(6)} MONAD!` : ''}`;
     
     bot.sendMessage(chatId, portfolioMsg, { parse_mode: 'Markdown', ...mainKeyboard() });
 });
@@ -406,9 +408,9 @@ bot.onText(/💸 Withdraw|\/withdraw/, async (msg) => {
     
     const withdrawMsg = `💸 *Withdraw Funds*
 
-💰 *Total Staked:* ${user.totalStaked.toFixed(4)} SOL
-💎 *Total Earned:* ${user.totalEarned.toFixed(6)} SOL
-📊 *Available:* ${(user.totalStaked + user.totalEarned).toFixed(4)} SOL
+💰 *Total Staked:* ${user.totalStaked.toFixed(4)} MONAD
+💎 *Total Earned:* ${user.totalEarned.toFixed(6)} MONAD
+📊 *Available:* ${(user.totalStaked + user.totalEarned).toFixed(4)} MONAD
 
 Select withdraw option:
 1️⃣ Withdraw earnings only
@@ -437,7 +439,7 @@ Send 1 or 2:`;
             saveDB(USERS_DB, users);
             saveDB(STAKES_DB, stakes);
             
-            bot.sendMessage(chatId, `✅ *Withdrawal Successful!*\n\n💰 Withdrawn: ${earnings.toFixed(6)} SOL\n💼 New Balance: ${user.balance.toFixed(4)} SOL\n\nYour stakes remain active and earning!`, { parse_mode: 'Markdown', ...mainKeyboard() });
+            bot.sendMessage(chatId, `✅ *Withdrawal Successful!*\n\n💰 Withdrawn: ${earnings.toFixed(6)} MONAD\n💼 New Balance: ${user.balance.toFixed(4)} MONAD\n\nYour stakes remain active and earning!`, { parse_mode: 'Markdown', ...mainKeyboard() });
         } else if (option === 2) {
             const total = user.totalStaked + user.totalEarned;
             user.balance += total;
@@ -449,7 +451,7 @@ Send 1 or 2:`;
             saveDB(USERS_DB, users);
             saveDB(STAKES_DB, stakes);
             
-            bot.sendMessage(chatId, `✅ *Full Withdrawal Successful!*\n\n💰 Withdrawn: ${total.toFixed(4)} SOL\n💼 New Balance: ${user.balance.toFixed(4)} SOL\n\nAll stakes have been closed. Start staking again anytime!`, { parse_mode: 'Markdown', ...mainKeyboard() });
+            bot.sendMessage(chatId, `✅ *Full Withdrawal Successful!*\n\n💰 Withdrawn: ${total.toFixed(4)} MONAD\n💼 New Balance: ${user.balance.toFixed(4)} MONAD\n\nAll stakes have been closed. Start staking again anytime!`, { parse_mode: 'Markdown', ...mainKeyboard() });
         } else {
             bot.sendMessage(chatId, '❌ Invalid option. Please try again.', mainKeyboard());
         }
@@ -464,11 +466,11 @@ bot.onText(/📈 Statistics|\/stats/, async (msg) => {
     const totalEarned = Object.values(users).reduce((sum, u) => sum + u.totalEarned, 0);
     const avgApy = Object.values(pools).filter(p => p.active).reduce((sum, p) => sum + p.apy, 0) / Object.values(pools).filter(p => p.active).length;
     
-    const statsMsg = `📈 *Morph Mind Statistics*
+    const statsMsg = `📈 *Monad Mind Statistics*
 
 👥 *Total Users:* ${totalUsers}
-💰 *Total Value Locked:* ${totalStaked.toFixed(2)} SOL
-💎 *Total Rewards Paid:* ${totalEarned.toFixed(4)} SOL
+💰 *Total Value Locked:* ${totalStaked.toFixed(2)} MONAD
+💎 *Total Rewards Paid:* ${totalEarned.toFixed(4)} MONAD
 📊 *Average APY:* ${avgApy.toFixed(2)}%
 
 🤖 *AI Performance:*
@@ -529,11 +531,11 @@ bot.onText(/🔙 Back to Menu/, (msg) => {
 });
 
 bot.onText(/\/help/, (msg) => {
-    const helpMsg = `🧠 *Morph Mind Help*
+    const helpMsg = `🧠 *Monad Mind Help*
 
 *Commands:*
 /start - Start the bot
-/stake - Stake SOL
+/stake - Stake MONAD
 /portfolio - View your portfolio
 /pools - View available pools
 /withdraw - Withdraw funds
@@ -543,13 +545,15 @@ bot.onText(/\/help/, (msg) => {
 
 *Features:*
 • 🤖 AI auto-compounding
-• 💎 Tokenized shares (MORPH)
+• 💎 Tokenized shares (MONAD)
 • 🔄 Dynamic reallocation
 • ⛽ Zero gas fee lockups
 • 📈 Real-time optimization
 
+🌐 *Website:* monadmind.space
+
 *Support:*
-For help, contact @MorphMindSupport`;
+For help, contact @MonadMindSupport`;
     
     bot.sendMessage(msg.chat.id, helpMsg, { parse_mode: 'Markdown', ...mainKeyboard() });
 });
@@ -561,7 +565,7 @@ setInterval(() => {
     Object.keys(users).forEach(chatId => {
         const compounded = autoCompoundRewards(chatId);
         if (compounded > 0) {
-            console.log(`User ${chatId}: Compounded ${compounded.toFixed(6)} SOL`);
+            console.log(`User ${chatId}: Compounded ${compounded.toFixed(6)} MONAD`);
         }
         
         const reallocated = reallocateStakes(chatId);
@@ -583,12 +587,12 @@ setInterval(() => {
 // Periodic notifications
 setInterval(() => {
     Object.entries(users).forEach(([chatId, user]) => {
-        if (user.totalEarned > 0.001) { // Only notify if earned > 0.001 SOL
-            bot.sendMessage(chatId, `💎 *Earnings Update*\n\nYou've earned ${user.totalEarned.toFixed(6)} SOL so far!\n\n🤖 AI is continuously optimizing your yields.`, { parse_mode: 'Markdown' });
+        if (user.totalEarned > 0.001) { // Only notify if earned > 0.001 MONAD
+            bot.sendMessage(chatId, `💎 *Earnings Update*\n\nYou've earned ${user.totalEarned.toFixed(6)} MONAD so far!\n\n🤖 AI is continuously optimizing your yields.`, { parse_mode: 'Markdown' });
         }
     });
 }, 86400000); // Daily
 
-console.log('🧠 Morph Mind Bot is running...');
+console.log('🧠 Monad Mind Bot is running...');
 console.log('🤖 AI yield optimization active');
 console.log('💰 Ready to revolutionize DeFi!');

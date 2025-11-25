@@ -1,16 +1,18 @@
-# 🧠 Morph Mind Bot
+# 🧠 Monad Mind Bot
 
-**Revolutionizes DeFi yield optimization by using AI to auto-compound rewards across Solana protocols without gas fee lockups.**
+**Revolutionizes DeFi yield optimization by using AI to auto-compound rewards across Monad protocols without gas fee lockups.**
+
+🌐 **Website:** [monadmind.space](https://monadmind.space)
 
 ## 🚀 Features
 
 - **🤖 AI-Powered Auto-Compounding**: Automatically compounds rewards every hour without manual intervention
 - **💎 Dynamic Reallocation**: AI reallocates funds to highest-yield pools in real-time
 - **🎯 Zero Manual Rebalancing**: Set it and forget it - AI handles everything
-- **🪙 Tokenized Shares (MORPH)**: Liquid tokenized shares for flexibility
+- **🪙 Tokenized Shares (MONAD)**: Liquid tokenized shares for flexibility
 - **⛽ No Gas Fee Lockups**: Withdraw anytime without penalties
 - **📈 Real-Time Optimization**: Continuous monitoring and optimization of yields
-- **🔐 Secure Wallet Management**: Each user gets a dedicated Solana wallet
+- **🔐 Secure Wallet Management**: Each user gets a dedicated Monad wallet
 
 ## 🚂 Railway Deployment (Recommended)
 
@@ -51,7 +53,7 @@
 
 1. **Clone or navigate to the project:**
 ```bash
-cd C:\Users\PC\Projects\morph-mind-bot
+cd C:\Users\PC\Projects\monad-mind-bot
 ```
 
 2. **Install dependencies:**
@@ -67,8 +69,8 @@ cp .env.example .env
 4. **Edit `.env` file with your credentials:**
 ```env
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
-SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
-SOLANA_NETWORK=mainnet-beta
+MONAD_RPC_URL=https://api.mainnet-beta.monad.com
+MONAD_NETWORK=mainnet-beta
 AUTO_COMPOUND_INTERVAL=3600000
 MIN_STAKE_AMOUNT=0.1
 MAX_STAKE_AMOUNT=1000
@@ -94,7 +96,7 @@ npm run dev
 ### User Commands
 
 - `/start` - Start the bot and create your wallet
-- `/stake` - Stake SOL and start earning
+- `/stake` - Stake MONAD and start earning
 - `/portfolio` - View your active stakes and earnings
 - `/pools` - View available yield pools
 - `/withdraw` - Withdraw your earnings or full stake
@@ -104,7 +106,7 @@ npm run dev
 
 ### Bot Buttons
 
-- **💰 Stake SOL** - Start staking process
+- **💰 Stake MONAD** - Start staking process
 - **📊 My Portfolio** - View your stakes and earnings
 - **🏦 Pools Info** - See all available pools and APYs
 - **💸 Withdraw** - Withdraw earnings or full amount
@@ -113,11 +115,11 @@ npm run dev
 
 ## 🏦 Supported Pools
 
-- **Marinade Finance** - Liquid staking (6-8% APY)
-- **Raydium** - DEX liquidity pools (10-15% APY)
-- **Orca** - Automated market maker (8-12% APY)
-- **Kamino** - Liquidity management (12-18% APY)
-- **Drift Protocol** - Perpetual futures (7-10% APY)
+- **MonadStake Finance** - Liquid staking (6-8% APY)
+- **MonadSwap** - DEX liquidity pools (10-15% APY)
+- **MonadPool** - Automated market maker (8-12% APY)
+- **MonadYield** - Liquidity management (12-18% APY)
+- **MonadLend Protocol** - Perpetual futures (7-10% APY)
 
 *APYs are dynamic and updated in real-time by the AI*
 
@@ -144,7 +146,7 @@ The AI uses a sophisticated scoring algorithm:
 ## 📁 Project Structure
 
 ```
-morph-mind-bot/
+monad-mind-bot/
 ├── bot.js              # Main bot application
 ├── package.json        # Dependencies and scripts
 ├── .env               # Environment configuration (create from .env.example)
@@ -159,15 +161,15 @@ morph-mind-bot/
 ## 🔐 Security
 
 - Private keys are stored locally in encrypted format
-- Each user gets a unique Solana wallet
+- Each user gets a unique Monad wallet
 - Private keys can be exported via `/exportkey` command
 - Never share your private key with anyone
 - The bot runs on your server with full data control
 
 ## 💡 How It Works
 
-1. **User Stakes SOL**
-   - User deposits SOL to their wallet
+1. **User Stakes MONAD**
+   - User deposits MONAD to their wallet
    - Specifies amount to stake
    - AI selects optimal pool
 
@@ -193,10 +195,10 @@ morph-mind-bot/
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `TELEGRAM_BOT_TOKEN` | Your Telegram bot token | Required |
-| `SOLANA_RPC_URL` | Solana RPC endpoint | mainnet-beta |
+| `MONAD_RPC_URL` | Monad RPC endpoint | mainnet-beta |
 | `AUTO_COMPOUND_INTERVAL` | Auto-compound interval (ms) | 3600000 (1 hour) |
-| `MIN_STAKE_AMOUNT` | Minimum stake amount (SOL) | 0.1 |
-| `MAX_STAKE_AMOUNT` | Maximum stake amount (SOL) | 1000 |
+| `MIN_STAKE_AMOUNT` | Minimum stake amount (MONAD) | 0.1 |
+| `MAX_STAKE_AMOUNT` | Maximum stake amount (MONAD) | 1000 |
 
 ### Customization
 
@@ -233,8 +235,8 @@ All data is stored locally in JSON files:
 - Never share your private key
 
 ### Connection issues
-- Check Solana RPC endpoint
-- Try alternative RPC: `https://api.devnet.solana.com` for testing
+- Check Monad RPC endpoint
+- Try alternative RPC: `https://api.devnet.monad.com` for testing
 - Verify internet connection
 
 ## 📈 Future Enhancements
@@ -265,12 +267,12 @@ This is a demonstration bot. For production use with real funds:
 3. Add proper error handling
 4. Implement rate limiting
 5. Add comprehensive testing
-6. Integrate with actual Solana protocols
+6. Integrate with actual Monad protocols
 
 **Use at your own risk. Not financial advice.**
 
 ---
 
-Built with ❤️ for the Solana DeFi community
+Built with ❤️ for the Monad DeFi community
 
-🚀 **Morph Mind - AI-Powered Yield Optimization**
+🚀 **Monad Mind - AI-Powered Yield Optimization**

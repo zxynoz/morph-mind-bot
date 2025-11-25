@@ -5,9 +5,9 @@
 ### 1. Push to GitHub
 ```bash
 git add .
-git commit -m "Initial commit - Morph Mind Bot"
+git commit -m "Initial commit - Monad Mind Bot"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/morph-mind-bot.git
+git remote add origin https://github.com/YOUR_USERNAME/monad-mind-bot.git
 git push -u origin main
 ```
 
@@ -19,7 +19,7 @@ git push -u origin main
 
 3. Select **"Deploy from GitHub repo"**
 
-4. Choose **morph-mind-bot** repository
+4. Choose **monad-mind-bot** repository
 
 5. Railway will auto-detect the Node.js project and start building
 
@@ -42,7 +42,7 @@ TELEGRAM_BOT_TOKEN = 8382759644:AAGdXf-gGUUXysZJLwEwG0ZmlSy6neaVvmQ
 AUTO_COMPOUND_INTERVAL = 3600000
 MIN_STAKE_AMOUNT = 0.1
 MAX_STAKE_AMOUNT = 1000
-SOLANA_RPC_URL = https://api.mainnet-beta.solana.com
+MONAD_RPC_URL = https://api.mainnet-beta.monad.com
 ```
 
 ### 4. Deploy!
@@ -62,7 +62,7 @@ SOLANA_RPC_URL = https://api.mainnet-beta.solana.com
 
 - **View Logs**: Railway Dashboard → Deployments → View Logs
 - **Restart Bot**: Railway Dashboard → Settings → Restart
-- **Check Status**: Look for "🧠 Morph Mind Bot is running..." in logs
+- **Check Status**: Look for "🧠 Monad Mind Bot is running..." in logs
 
 ## 💰 Pricing
 
@@ -94,10 +94,10 @@ git push
 - Survives restarts and redeployments
 
 ### Connection issues
-- Check Solana RPC endpoint
+- Check Monad RPC endpoint
 - Railway has good network connectivity
 - No additional firewall configuration needed
 
 ## 🎉 Done!
 
-Your Morph Mind bot is now running 24/7 on Railway with automatic restarts and scaling!
+Your Monad Mind bot is now running 24/7 on Railway with automatic restarts and scaling!

@@ -1,15 +1,15 @@
 {
-  "name": "morph-mind-bot",
+  "name": "monad-mind-bot",
   "version": "1.0.0",
-  "description": "Morph Mind - AI-powered DeFi yield optimization bot for Solana",
+  "description": "Monad Mind - AI-powered DeFi yield optimization bot for Monad",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
     "dev": "node --watch bot.js"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.95.8",
-    "@solana/spl-token": "^0.4.9",
+    "@monad/web3.js": "^1.95.8",
+    "@monad/spl-token": "^0.4.9",
     "node-telegram-bot-api": "^0.66.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
@@ -18,12 +18,12 @@
   "keywords": [
     "telegram",
     "bot",
-    "solana",
+    "monad",
     "defi",
     "yield",
     "ai",
     "auto-compound"
   ],
-  "author": "Morph Mind Labs",
+  "author": "Monad Mind Labs",
   "license": "MIT"
 }
